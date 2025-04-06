@@ -5,3 +5,4 @@ flask-bcrypt
 Flask-Env
 dotenv
 flash
+flask-login
