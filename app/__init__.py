@@ -2,6 +2,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from flask_socketio import SocketIO
+
 from dotenv import load_dotenv
 import os
 
@@ -12,6 +14,7 @@ load_dotenv()
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
+socketio = SocketIO()
 
 def create_app():
     app = Flask(__name__)
@@ -29,9 +32,11 @@ def create_app():
     bcrypt.init_app(app)
     login_manager.init_app(app)
     login_manager.login_view = 'main.login'  # Set the login view endpoint
+    socketio.init_app(app)
 
     # Import models after db initialization to avoid circular imports
     from app.models.User import User
+    from app.models.Message import Message  # We'll create this model
 
     @login_manager.user_loader
     def load_user(user_id):
@@ -40,6 +45,10 @@ def create_app():
     # Register blueprints
     from app.routes import main
     app.register_blueprint(main)
+
+    # Create database tables
+    from app.controllers.sockets import register_socket_events
+    register_socket_events(socketio)
 
     # Create database tables
     with app.app_context():

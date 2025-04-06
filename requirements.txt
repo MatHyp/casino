@@ -6,3 +6,5 @@ Flask-Env
 dotenv
 flash
 flask-login
+python-socketio
+flask-socketio

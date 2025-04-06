@@ -1,6 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user, login_required
 from app.models.User import User
+from app.models.Message import Message
+
 from app import db, bcrypt
 
 main = Blueprint("main", __name__)
@@ -12,7 +14,8 @@ def home():
 @main.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('dashboard.html', user=current_user)
+    messages = Message.query.order_by(Message.timestamp.desc()).limit(50).all()[::-1]
+    return render_template('dashboard.html', user=current_user, messages=messages)
 
 @main.route("/login", methods=['GET', 'POST'])
 def login():

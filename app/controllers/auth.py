@@ -3,7 +3,6 @@ from app.models.User import User
 from flask import flash
 
 
-
 def register_user(username, email, password):
     if User.query.filter_by(email=email).first():
         return (False, "Email already exists", None)
