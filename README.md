@@ -1,4 +1,4 @@
-# Virtual Casino Web Application
+# Casino Web Application
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
@@ -23,7 +23,7 @@ A containerized virtual casino web application built with Python Flask and Postg
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/virtual-casino.git
+git clone https://github.com/MatHyp/casino.git
 cd casino
 
 # Start the application
