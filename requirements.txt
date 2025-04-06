@@ -3,3 +3,5 @@ flask_sqlalchemy
 psycopg2-binary
 flask-bcrypt
 Flask-Env
+dotenv
+flash

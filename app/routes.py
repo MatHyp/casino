@@ -1,36 +1,26 @@
-from flask import Flask, Blueprint, render_template, request
-from flask_bcrypt import Bcrypt
-
-# Import user and db
-from . import db
-from .models import User
+from flask import Blueprint, render_template, request
+from app.controllers.auth import register_user
 
 main = Blueprint("main", __name__)
 
-app = Flask(__name__)
-bcrypt = Bcrypt(app)
-
-
 @main.route("/")
 def home():
-    return "Hello from Flask + Postgres! 🚀"
+    return "Hello world with Postgres! 🚀"
 
-
-@main.route('/register', methods=['POST', 'GET'])
+@main.route('/register', methods=['GET', 'POST'])
 def register():
-
     if request.method == 'POST':
         username = request.form['username']
         email = request.form['email']
         password = request.form['password']
 
-        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        user = register_user(username, email, password)
 
-        user = User(username=username, email=email, password=hashed_password)
-        db.session.add(user)
-        db.session.commit()
-
-        flash('Account created successfully!', 'success')
-        return redirect(url_for('login'))
-
+        if user:
+            return render_template('register.html', 
+                                 message="Registration successful! Please log in.")
+        else:
+            return render_template('register.html', 
+                                 message="Username or Email already exists.")
+    
     return render_template('register.html')
